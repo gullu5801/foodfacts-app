@@ -1,13 +1,12 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink } from "react-router-dom"
 
-function NavBar() {
+function NavBar({ count }) {
   return (
-    <nav className="navbar">
-      <span className="nav-logo">🥗 FoodFacts</span>
-      <div className="nav-links">
-        <NavLink to="/">Search</NavLink>
-        <NavLink to="/saved">Saved Items</NavLink>
-      </div>
+    <nav>
+      <NavLink to="/">Home</NavLink>
+      <NavLink to="/saved">
+        Saved {count > 0 && <span className="badge">{count}</span>}
+      </NavLink>
     </nav>
   )
 }

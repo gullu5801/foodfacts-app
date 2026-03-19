@@ -7,7 +7,7 @@ function HomePage() {
   const { results, loading, error, searchFood } = useFoodSearch()
 
   return (
-    <div>
+    <div className="page">
       <h2>Search Nutrition Info</h2>
 
       <SearchBar onSearch={searchFood} />
@@ -16,7 +16,9 @@ function HomePage() {
 
       {error && <ErrorMessage message={error} />}
 
-      {!loading && results.length === 0 && <p>Start searching 👆</p>}
+      {!loading && results.length === 0 && (
+        <p>🔍 Start searching for food like banana or oats</p>
+      )}
 
       {!loading && results.length > 0 && (
         <FoodList products={results} />

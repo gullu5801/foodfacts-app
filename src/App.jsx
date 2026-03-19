@@ -25,6 +25,7 @@ function App() {
   return (
     <div>
       <NavBar count={saved.length} />
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route

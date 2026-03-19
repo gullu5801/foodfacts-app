@@ -42,3 +42,25 @@ Step 11 : Update Homepage.jsx
 Step 12 : Build error message component
 
 Step 13 : update foodcard.jsx to make it navigable
+
+Step 14 : Build the DetailPage.jsx
+
+Step 15 : It sould look like and commit the changes
+
+![Changed DetailsCard](./src/assets/part2_commit3.png)
+
+-> git add .
+-> git commit -m "feat: add DetailPage with useParams and Axios"
+
+Step 16 Build the SavePage.jsx
+
+Step 17 : commit the changes
+
+-> git add .
+-> git commit -m "feat: saved items with useReducer"
+
+Step 18 : update Navebar.jsx
+
+Step 19 : update index .css
+
+Step 20 : update foodlist.jsx

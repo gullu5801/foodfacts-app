@@ -11,7 +11,7 @@ function useFoodSearch() {
     setError(null)
 
     try {
-      const response = await axios.get(
+      const res = await axios.get(
         "https://world.openfoodfacts.org/cgi/search.pl",
         {
           params: {
@@ -23,19 +23,15 @@ function useFoodSearch() {
         }
       )
 
-      const filtered = response.data.products.filter(
+      const filtered = res.data.products.filter(
         (p) => p.product_name && p.product_name.trim() !== ""
       )
 
       setResults(filtered.slice(0, 12))
     } catch (err) {
-      if (err.response) {
-        setError("Server error. Try again.")
-      } else if (err.request) {
-        setError("No internet connection.")
-      } else {
-        setError("Something went wrong.")
-      }
+      if (err.response) setError("Server error")
+      else if (err.request) setError("No internet connection")
+      else setError("Something went wrong")
     } finally {
       setLoading(false)
     }

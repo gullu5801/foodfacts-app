@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom"
 
-function FoodCard({ product }) {
+export default function FoodCard({ product }) {
   const navigate = useNavigate()
 
-  const handleClick = () => {
-    navigate(`/product/${product.code}`)
-  }
-
   return (
-    <div className="food-card" onClick={handleClick}>
+    <div
+      className="food-card"
+      onClick={() => navigate(`/product/${product.code}`)}
+    >
       <img
         src={product.image_small_url || "https://via.placeholder.com/150"}
         alt={product.product_name}
@@ -19,5 +18,3 @@ function FoodCard({ product }) {
     </div>
   )
 }
-
-export default FoodCard

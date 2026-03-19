@@ -22,13 +22,12 @@ function DetailPage({ saved, dispatch }) {
           setProduct(res.data.product)
           setLoading(false)
         }
-      } catch (err) {
+      } catch {
         setLoading(false)
       }
     }
 
     fetchData()
-
     return () => (cancelled = true)
   }, [barcode])
 
@@ -37,28 +36,41 @@ function DetailPage({ saved, dispatch }) {
   const isSaved = saved.some((p) => p.code === barcode)
 
   return (
-    <div>
-      <button onClick={() => navigate(-1)}>⬅ Back</button>
-
-      <h2>{product.product_name}</h2>
-      <p>{product.brands}</p>
-
-      <p>Calories: {product.nutriments?.["energy-kcal_100g"]}</p>
-      <p>Protein: {product.nutriments?.proteins_100g}</p>
-      <p>Carbs: {product.nutriments?.carbohydrates_100g}</p>
-      <p>Fat: {product.nutriments?.fat_100g}</p>
-
-      <button
-        onClick={() =>
-          dispatch({
-            type: isSaved ? "REMOVE" : "ADD",
-            product,
-            code: barcode,
-          })
-        }
-      >
-        {isSaved ? "Remove" : "Save"}
+    <div className="page">
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        ← Back
       </button>
+
+      <div className="detail-card">
+        <img
+          className="detail-image"
+          src={product.image_small_url || "https://via.placeholder.com/150"}
+        />
+
+        <div className="detail-info">
+          <h2>{product.product_name}</h2>
+          <p>{product.brands}</p>
+
+          <p>🔥 Calories: {product.nutriments?.["energy-kcal_100g"]}</p>
+          <p>💪 Protein: {product.nutriments?.proteins_100g}</p>
+          <p>🍞 Carbs: {product.nutriments?.carbohydrates_100g}</p>
+          <p>🧈 Fat: {product.nutriments?.fat_100g}</p>
+
+          <div className="detail-actions">
+            <button
+              onClick={() =>
+                dispatch({
+                  type: isSaved ? "REMOVE" : "ADD",
+                  product,
+                  code: barcode,
+                })
+              }
+            >
+              {isSaved ? "Remove" : "Save"}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

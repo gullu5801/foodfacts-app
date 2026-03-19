@@ -20,3 +20,25 @@ Step 4 : Install React Router
 
 Step 5 : Stepup Router in main.jsx
 
+Step 6 : Change App.jsx into Routing shells
+
+Step 7 : Add codes to Navbar.jsx
+
+Step 8 : Commit the changes once your folder lookes like this
+
+![Part 2 folder structure commit 2](./src/assets/Part2_2ndCommit%20.png)
+
+-> git add .
+-> git commit -m "feat: add React Router with NavBar and HomePage"
+
+Step 9 : install Axios
+
+-> npm install axios
+
+Step 10 : Build Custom hook + add axios to useFoodSearch.js
+
+Step 11 : Update Homepage.jsx
+
+Step 12 : Build error message component
+
+Step 13 : update foodcard.jsx to make it navigable

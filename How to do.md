@@ -64,3 +64,17 @@ Step 18 : update Navebar.jsx
 Step 19 : update index .css
 
 Step 20 : update foodlist.jsx
+
+Step 21 : Final commits (refer livebook)
+
+Step 22 : Push to github
+
+-> git push origin part2/routing-and-async
+
+Step 23 : Open a PR (Refer LiveBook)
+
+Step 24 : Record Video and submit both links (Refer LiveBook)
+
+
+QuickFix CopyEverythingFrom Github
+![all modified Files](./src/assets/Part2FinalModifiedFiles.png)

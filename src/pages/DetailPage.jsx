@@ -1,165 +1,91 @@
-import { useNavigate, useLocation } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useNavigate, useLocation, useParams } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { addItem, removeItem } from "../store/savedSlice"
 
 import Container from "@mui/material/Container"
-import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
-import Paper from "@mui/material/Paper"
-
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd"
-import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove"
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"
-
-import NutritionRow from "../components/NutritionRow"
+import CircularProgress from "@mui/material/CircularProgress"
 
 function DetailPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { barcode } = useParams()
 
   const dispatch = useDispatch()
   const savedItems = useSelector((state) => state.saved.items)
 
-  const product = location.state?.product
+  const [product, setProduct] = useState(
+    location.state?.product
+      ? { ...location.state.product, id: location.state.product.code }
+      : null
+  )
 
-  // If user directly opens URL without state
-  if (!product) {
+  const [loading, setLoading] = useState(!product)
+
+  useEffect(() => {
+    if (!product) {
+      const fetchProduct = async () => {
+        try {
+          const res = await fetch(
+            `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`
+          )
+          const data = await res.json()
+
+          if (data.status === 1) {
+            setProduct({
+              ...data.product,
+              id: data.product.code
+            })
+          } else {
+            setProduct(null)
+          }
+        } catch (err) {
+          console.error(err)
+          setProduct(null)
+        } finally {
+          setLoading(false)
+        }
+      }
+
+      fetchProduct()
+    }
+  }, [barcode])
+
+  if (loading) {
     return (
-      <Container sx={{ py: 4 }}>
-        <Typography variant="h6">Product not found.</Typography>
-        <Button onClick={() => navigate("/")}>
-          ← Back to Search
-        </Button>
+      <Container sx={{ py: 4, textAlign: "center" }}>
+        <CircularProgress />
       </Container>
     )
   }
 
-  const { product_name, brands, image_url, nutriments } = product
+  if (!product) {
+    return (
+      <Container sx={{ py: 4 }}>
+        <Typography variant="h6">Product not found.</Typography>
+        <Button onClick={() => navigate("/")}>← Back to Search</Button>
+      </Container>
+    )
+  }
 
   const isSaved = savedItems.some((item) => item.id === product.id)
 
-  const handleSaveToggle = () => {
-    if (isSaved) {
-      dispatch(removeItem(product.id))
-    } else {
-      dispatch(addItem(product))
-    }
-  }
-
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      {/* Back Button */}
+    <Container sx={{ py: 4 }}>
+      <Typography variant="h4">{product.product_name}</Typography>
+      <Typography>{product.brands}</Typography>
+
       <Button
-        startIcon={<ArrowBackIcon />}
-        onClick={() => navigate(-1)}
-        sx={{ mb: 3 }}
+        onClick={() =>
+          isSaved
+            ? dispatch(removeItem(product.id))
+            : dispatch(addItem(product))
+        }
       >
-        Back
+        {isSaved ? "Remove" : "Save"}
       </Button>
-
-      {/* Main Card */}
-      <Paper sx={{ p: 3 }}>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 3,
-            flexWrap: "wrap",
-            mb: 3,
-            alignItems: "center"
-          }}
-        >
-          {/* Image */}
-          {image_url && (
-            <Box
-              component="img"
-              src={image_url}
-              alt={product_name}
-              sx={{
-                width: 160,
-                height: 160,
-                objectFit: "contain"
-              }}
-            />
-          )}
-
-          {/* Info */}
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="h5" gutterBottom>
-              {product_name || "Unknown Product"}
-            </Typography>
-
-            <Typography color="text.secondary" gutterBottom>
-              {brands || "Unknown Brand"}
-            </Typography>
-
-            <Button
-              variant={isSaved ? "outlined" : "contained"}
-              color={isSaved ? "error" : "primary"}
-              startIcon={
-                isSaved ? <BookmarkRemoveIcon /> : <BookmarkAddIcon />
-              }
-              onClick={handleSaveToggle}
-              sx={{ mt: 1 }}
-            >
-              {isSaved ? "Remove from Saved" : "Save to My List"}
-            </Button>
-          </Box>
-        </Box>
-
-        {/* Nutrition Section */}
-        <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-          Nutrition per 100g
-        </Typography>
-
-        <NutritionRow
-          label="Calories"
-          value={nutriments?.["energy-kcal_100g"]}
-          unit=" kcal"
-        />
-
-        <NutritionRow
-          label="Protein"
-          value={nutriments?.proteins_100g}
-          unit=" g"
-        />
-
-        <NutritionRow
-          label="Carbohydrates"
-          value={nutriments?.carbohydrates_100g}
-          unit=" g"
-        />
-
-        <NutritionRow
-          label="Sugars"
-          value={nutriments?.sugars_100g}
-          unit=" g"
-        />
-
-        <NutritionRow
-          label="Fat"
-          value={nutriments?.fat_100g}
-          unit=" g"
-        />
-
-        <NutritionRow
-          label="Saturated Fat"
-          value={nutriments?.["saturated-fat_100g"]}
-          unit=" g"
-        />
-
-        <NutritionRow
-          label="Fibre"
-          value={nutriments?.fiber_100g}
-          unit=" g"
-        />
-
-        <NutritionRow
-          label="Salt"
-          value={nutriments?.salt_100g}
-          unit=" g"
-        />
-      </Paper>
     </Container>
   )
 }

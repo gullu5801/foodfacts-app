@@ -41,3 +41,17 @@ Step 13 : change componnts/SearchBar.jsx
 Step 14 : save till now if it looks like this 
 
 ![2nd Commit](./src/assets/Part3secondCommit.png)
+
+-> git add .
+-> git commit -m "feat: replace useReducer with Redux Toolkit"
+
+Step 15 : change src/theme.js
+
+Step 16 : Build components/NutritionRow.jsx
+
+Step 17 : 3rd commit
+
+-> git add .
+-> git commit -m "feat: apply Material UI throughout app"
+
+

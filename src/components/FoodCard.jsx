@@ -15,27 +15,74 @@ function FoodCard({ product }) {
         })
       }
       sx={{
-        cursor: "pointer",
+        height: 240, // 🔥 fixed height for all cards
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        borderRadius: 3,
         p: 2,
-        textAlign: "center",
-        "&:hover": { boxShadow: 6 }
+        cursor: "pointer",
+        transition: "0.2s",
+        boxShadow: 2,
+        "&:hover": {
+          boxShadow: 6,
+          transform: "translateY(-4px)"
+        }
       }}
     >
+      {/* IMAGE */}
       <Box
-        component="img"
-        src={
-          product.image_small_url ||
-          "https://via.placeholder.com/100"
-        }
-        sx={{ height: 100, objectFit: "contain", mb: 1 }}
-      />
+        sx={{
+          height: 110, // 🔥 fixed image area
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <Box
+          component="img"
+          src={
+            product.image_small_url ||
+            "https://via.placeholder.com/100"
+          }
+          alt={product.product_name}
+          sx={{
+            maxHeight: "100%",
+            maxWidth: "100%",
+            objectFit: "contain"
+          }}
+        />
+      </Box>
 
-      <CardContent>
-        <Typography fontWeight={600}>
-          {product.product_name}
+      {/* TEXT */}
+      <CardContent sx={{ p: 0 }}>
+        <Typography
+          fontWeight={600}
+          sx={{
+            fontSize: "14px",
+            textAlign: "center",
+            display: "-webkit-box",
+            WebkitLineClamp: 2, // 🔥 limit title lines
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden"
+          }}
+        >
+          {product.product_name || "Unknown Product"}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {product.brands}
+
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            textAlign: "center",
+            fontSize: "12px",
+            mt: 0.5,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap"
+          }}
+        >
+          {product.brands || "Unknown Brand"}
         </Typography>
       </CardContent>
     </Card>

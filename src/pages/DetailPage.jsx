@@ -1,77 +1,166 @@
-import { useParams, useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { useNavigate, useLocation } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
+import { addItem, removeItem } from "../store/savedSlice"
 
-function DetailPage({ saved, dispatch }) {
-  const { barcode } = useParams()
+import Container from "@mui/material/Container"
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import Button from "@mui/material/Button"
+import Paper from "@mui/material/Paper"
+
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd"
+import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
+
+import NutritionRow from "../components/NutritionRow"
+
+function DetailPage() {
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const [product, setProduct] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
+  const savedItems = useSelector((state) => state.saved.items)
 
-  useEffect(() => {
-    let cancelled = false
+  const product = location.state?.product
 
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(
-          `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`
-        )
+  // If user directly opens URL without state
+  if (!product) {
+    return (
+      <Container sx={{ py: 4 }}>
+        <Typography variant="h6">Product not found.</Typography>
+        <Button onClick={() => navigate("/")}>
+          ← Back to Search
+        </Button>
+      </Container>
+    )
+  }
 
-        if (!cancelled) {
-          setProduct(res.data.product)
-          setLoading(false)
-        }
-      } catch {
-        setLoading(false)
-      }
+  const { product_name, brands, image_url, nutriments } = product
+
+  const isSaved = savedItems.some((item) => item.id === product.id)
+
+  const handleSaveToggle = () => {
+    if (isSaved) {
+      dispatch(removeItem(product.id))
+    } else {
+      dispatch(addItem(product))
     }
-
-    fetchData()
-    return () => (cancelled = true)
-  }, [barcode])
-
-  if (loading) return <p>Loading...</p>
-
-  const isSaved = saved.some((p) => p.code === barcode)
+  }
 
   return (
-    <div className="page">
-      <button className="back-btn" onClick={() => navigate(-1)}>
-        ← Back
-      </button>
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      {/* Back Button */}
+      <Button
+        startIcon={<ArrowBackIcon />}
+        onClick={() => navigate(-1)}
+        sx={{ mb: 3 }}
+      >
+        Back
+      </Button>
 
-      <div className="detail-card">
-        <img
-          className="detail-image"
-          src={product.image_small_url || "https://via.placeholder.com/150"}
+      {/* Main Card */}
+      <Paper sx={{ p: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 3,
+            flexWrap: "wrap",
+            mb: 3,
+            alignItems: "center"
+          }}
+        >
+          {/* Image */}
+          {image_url && (
+            <Box
+              component="img"
+              src={image_url}
+              alt={product_name}
+              sx={{
+                width: 160,
+                height: 160,
+                objectFit: "contain"
+              }}
+            />
+          )}
+
+          {/* Info */}
+          <Box sx={{ flex: 1 }}>
+            <Typography variant="h5" gutterBottom>
+              {product_name || "Unknown Product"}
+            </Typography>
+
+            <Typography color="text.secondary" gutterBottom>
+              {brands || "Unknown Brand"}
+            </Typography>
+
+            <Button
+              variant={isSaved ? "outlined" : "contained"}
+              color={isSaved ? "error" : "primary"}
+              startIcon={
+                isSaved ? <BookmarkRemoveIcon /> : <BookmarkAddIcon />
+              }
+              onClick={handleSaveToggle}
+              sx={{ mt: 1 }}
+            >
+              {isSaved ? "Remove from Saved" : "Save to My List"}
+            </Button>
+          </Box>
+        </Box>
+
+        {/* Nutrition Section */}
+        <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+          Nutrition per 100g
+        </Typography>
+
+        <NutritionRow
+          label="Calories"
+          value={nutriments?.["energy-kcal_100g"]}
+          unit=" kcal"
         />
 
-        <div className="detail-info">
-          <h2>{product.product_name}</h2>
-          <p>{product.brands}</p>
+        <NutritionRow
+          label="Protein"
+          value={nutriments?.proteins_100g}
+          unit=" g"
+        />
 
-          <p>🔥 Calories: {product.nutriments?.["energy-kcal_100g"]}</p>
-          <p>💪 Protein: {product.nutriments?.proteins_100g}</p>
-          <p>🍞 Carbs: {product.nutriments?.carbohydrates_100g}</p>
-          <p>🧈 Fat: {product.nutriments?.fat_100g}</p>
+        <NutritionRow
+          label="Carbohydrates"
+          value={nutriments?.carbohydrates_100g}
+          unit=" g"
+        />
 
-          <div className="detail-actions">
-            <button
-              onClick={() =>
-                dispatch({
-                  type: isSaved ? "REMOVE" : "ADD",
-                  product,
-                  code: barcode,
-                })
-              }
-            >
-              {isSaved ? "Remove" : "Save"}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+        <NutritionRow
+          label="Sugars"
+          value={nutriments?.sugars_100g}
+          unit=" g"
+        />
+
+        <NutritionRow
+          label="Fat"
+          value={nutriments?.fat_100g}
+          unit=" g"
+        />
+
+        <NutritionRow
+          label="Saturated Fat"
+          value={nutriments?.["saturated-fat_100g"]}
+          unit=" g"
+        />
+
+        <NutritionRow
+          label="Fibre"
+          value={nutriments?.fiber_100g}
+          unit=" g"
+        />
+
+        <NutritionRow
+          label="Salt"
+          value={nutriments?.salt_100g}
+          unit=" g"
+        />
+      </Paper>
+    </Container>
   )
 }
 

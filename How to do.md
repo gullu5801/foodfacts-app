@@ -1,80 +1,43 @@
-Step 1 : After completing Part 1 dont merge the pull request
+Step 1 : After completing Part 2 dont merge the pull request
 insted create a new feature branch.
 
--> git checkout -b part2/routing-and-async
+-> git checkout -b part3/redux-mui-deploy
 -> git branch
 
-Step 2 : Restructure your project structure
-![Part 2 Project Structure](./src/assets/Part2ProjectStructure.png)
+Step 2 : install dependencies
 
-Your project should now look like
-![VSCode View](./src/assets/Part2AfterCreatingStructure.png)
+-> npm install @reduxjs/toolkit react-redux
+-> npm install @mui/material @mui/icons-material @emotion/react @emotion/styled
 
-Step 3 : Commit the changes
+Step 3 : Restructure your project structure (dont delete searchbar.jsx)
+![Part 3 folder Structure](./src/assets/Part3FolderStructure.png)
 
--> git add .
--> git commit -m "setup: part2 branch and folder structure"  
+it should look like this
+![Initial Folder Structure](./src/assets/part2VsStrututeInitial.png)
 
-Step 4 : Install React Router
--> npm install react-router-dom
-
-Step 5 : Stepup Router in main.jsx
-
-Step 6 : Change App.jsx into Routing shells
-
-Step 7 : Add codes to Navbar.jsx
-
-Step 8 : Commit the changes once your folder lookes like this
-
-![Part 2 folder structure commit 2](./src/assets/Part2_2ndCommit%20.png)
+Step 4 : iniial commit
 
 -> git add .
--> git commit -m "feat: add React Router with NavBar and HomePage"
+-> git commit -m "setup: part3 branch, install redux and mui"
 
-Step 9 : install Axios
+Step 5 : change store/savedSlice.js
 
--> npm install axios
+Step 6 : change store/index.js
 
-Step 10 : Build Custom hook + add axios to useFoodSearch.js
+Step 7 : change main.jsx
 
-Step 11 : Update Homepage.jsx
+Step 8 : change App.jsx
 
-Step 12 : Build error message component
+Step 9 : change store/DetailPage.jsx
 
-Step 13 : update foodcard.jsx to make it navigable
+Step 10 : change store/SavedPage.jsx
 
-Step 14 : Build the DetailPage.jsx
+Step 11 : change commponents/NavBar.jsx
 
-Step 15 : It sould look like and commit the changes
+Step 12 : change components/Homepage.jsx
 
-![Changed DetailsCard](./src/assets/part2_commit3.png)
+Step 13 : change componnts/SearchBar.jsx
 
--> git add .
--> git commit -m "feat: add DetailPage with useParams and Axios"
+Step 14 : save till now if it looks like this 
 
-Step 16 Build the SavePage.jsx
-
-Step 17 : commit the changes
-
--> git add .
--> git commit -m "feat: saved items with useReducer"
-
-Step 18 : update Navebar.jsx
-
-Step 19 : update index .css
-
-Step 20 : update foodlist.jsx
-
-Step 21 : Final commits (refer livebook)
-
-Step 22 : Push to github
-
--> git push origin part2/routing-and-async
-
-Step 23 : Open a PR (Refer LiveBook)
-
-Step 24 : Record Video and submit both links (Refer LiveBook)
-
-
-QuickFix CopyEverythingFrom Github
-![all modified Files](./src/assets/Part2FinalModifiedFiles.png)
+![2nd Commit](./src/assets/Part3secondCommit.png)

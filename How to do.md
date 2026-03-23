@@ -64,34 +64,15 @@ Step 19 final commit
 
 Final Folder Struture
 
-src/
-├── components/
-│   ├── SearchBar.jsx
-│   ├── FoodCard.jsx
-│   ├── FoodList.jsx
-│   ├── NavBar.jsx
-│   ├── ErrorMessage.jsx
-│   ├── NutritionRow.jsx
-│   └── ClassFoodCard.jsx
-│
-├── pages/
-│   ├── HomePage.jsx
-│   ├── DetailPage.jsx
-│   └── SavedPage.jsx
-│
-├── hooks/
-│   └── useFoodSearch.js
-│
-├── store/
-│   ├── index.js
-│   └── savedSlice.js
-│
-├── theme.js
-├── App.jsx
-├── main.jsx
-└── index.css
+![Final](./src/assets/FinalStructure.png)
 
-Step 20 : build app
+Step 20 : update index.html tytle to "FoodFacts – Search Nutrition Info"
+
+Step 21 : build app
 
 -> npm run build
 -> npm run preview
+
+Step 21 : update index.css
+
+Quick Fix : Copy evvery thing from github

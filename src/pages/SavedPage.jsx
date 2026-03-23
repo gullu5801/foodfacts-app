@@ -3,14 +3,11 @@ import { removeItem } from "../store/savedSlice"
 import { useNavigate } from "react-router-dom"
 
 import Container from "@mui/material/Container"
-import Typography from "@mui/material/Typography"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
+import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-
-import DeleteIcon from "@mui/icons-material/Delete"
-import VisibilityIcon from "@mui/icons-material/Visibility"
 
 function SavedPage() {
   const saved = useSelector((state) => state.saved.items)
@@ -18,95 +15,82 @@ function SavedPage() {
   const navigate = useNavigate()
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      <Typography variant="h4" gutterBottom fontWeight={700}>
+    <Container sx={{ py: 4 }}>
+      <Typography variant="h4" gutterBottom>
         Saved Items
       </Typography>
 
-      {saved.length === 0 ? (
-        <Typography color="text.secondary">
-          No saved items yet.
-        </Typography>
-      ) : (
-        saved.map((product) => (
-          <Card
-            key={product.id}
-            sx={{
-              mb: 3,
-              borderRadius: 3,
-              boxShadow: 3,
-              transition: "0.2s",
-              "&:hover": {
-                boxShadow: 6,
-                transform: "translateY(-2px)"
-              }
-            }}
-          >
-            <CardContent>
-              <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                
-                {/* 🔥 IMAGE */}
-                <Box
-                  component="img"
-                  src={
-                    product.image_small_url ||
-                    "https://via.placeholder.com/100"
-                  }
-                  alt={product.product_name}
-                  sx={{
-                    width: 80,
-                    height: 80,
-                    objectFit: "contain",
-                    borderRadius: 2,
-                    backgroundColor: "#f5f5f5",
-                    p: 1
-                  }}
-                />
+      {saved.map((p) => (
+        <Card key={p.code} sx={{ mt: 2, p: 1 }}>
+          <CardContent>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                alignItems: "center",
 
-                {/* TEXT */}
-                <Box sx={{ flex: 1 }}>
-                  <Typography fontWeight={600}>
-                    {product.product_name}
-                  </Typography>
+                /* 🔥 RESPONSIVE FIX */
+                flexDirection: { xs: "column", sm: "row" }
+              }}
+            >
+              {/* IMAGE */}
+              <Box
+                component="img"
+                src={p.image_small_url}
+                sx={{
+                  width: 80,
+                  height: 80,
+                  objectFit: "contain"
+                }}
+              />
 
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                  >
-                    {product.brands}
-                  </Typography>
-                </Box>
+              {/* TEXT */}
+              <Box sx={{ flex: 1, textAlign: { xs: "center", sm: "left" } }}>
+                <Typography fontWeight={600}>
+                  {p.product_name}
+                </Typography>
 
-                {/* ACTIONS */}
-                <Box sx={{ display: "flex", gap: 1 }}>
-                  <Button
-                    variant="outlined"
-                    color="success"
-                    startIcon={<VisibilityIcon />}
-                    onClick={() =>
-                      navigate(`/product/${product.id}`)
-                    }
-                  >
-                    View
-                  </Button>
-
-                  <Button
-                    variant="contained"
-                    color="error"
-                    startIcon={<DeleteIcon />}
-                    onClick={() =>
-                      dispatch(removeItem(product.id))
-                    }
-                  >
-                    Remove
-                  </Button>
-                </Box>
-
+                <Typography variant="body2" color="text.secondary">
+                  {p.brands}
+                </Typography>
               </Box>
-            </CardContent>
-          </Card>
-        ))
-      )}
+
+              {/* BUTTONS */}
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 1,
+
+                  /* 🔥 STACK ON MOBILE */
+                  flexDirection: { xs: "column", sm: "row" },
+                  width: { xs: "100%", sm: "auto" }
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  onClick={() =>
+                    navigate(`/product/${p.code}`, {
+                      state: { product: p }
+                    })
+                  }
+                >
+                  View
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="error"
+                  fullWidth
+                  onClick={() => dispatch(removeItem(p.code))}
+                >
+                  Remove
+                </Button>
+              </Box>
+            </Box>
+          </CardContent>
+        </Card>
+      ))}
     </Container>
   )
 }

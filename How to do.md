@@ -54,4 +54,44 @@ Step 17 : 3rd commit
 -> git add .
 -> git commit -m "feat: apply Material UI throughout app"
 
+Step 18 : create components/classFoodCart.jsx
 
+Step 19 final commit 
+
+-> git add .
+-> git commit -m "docs: add ClassFoodCard for lifecycle reference"
+
+
+Final Folder Struture
+
+src/
+├── components/
+│   ├── SearchBar.jsx
+│   ├── FoodCard.jsx
+│   ├── FoodList.jsx
+│   ├── NavBar.jsx
+│   ├── ErrorMessage.jsx
+│   ├── NutritionRow.jsx
+│   └── ClassFoodCard.jsx
+│
+├── pages/
+│   ├── HomePage.jsx
+│   ├── DetailPage.jsx
+│   └── SavedPage.jsx
+│
+├── hooks/
+│   └── useFoodSearch.js
+│
+├── store/
+│   ├── index.js
+│   └── savedSlice.js
+│
+├── theme.js
+├── App.jsx
+├── main.jsx
+└── index.css
+
+Step 20 : build app
+
+-> npm run build
+-> npm run preview

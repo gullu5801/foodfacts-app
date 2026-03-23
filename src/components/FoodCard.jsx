@@ -1,20 +1,45 @@
 import { useNavigate } from "react-router-dom"
+import Card from "@mui/material/Card"
+import CardContent from "@mui/material/CardContent"
+import Typography from "@mui/material/Typography"
+import Box from "@mui/material/Box"
 
-export default function FoodCard({ product }) {
+function FoodCard({ product }) {
   const navigate = useNavigate()
 
   return (
-    <div
-      className="food-card"
-      onClick={() => navigate(`/product/${product.code}`)}
+    <Card
+      onClick={() =>
+        navigate(`/product/${product.code}`, {
+          state: { product }
+        })
+      }
+      sx={{
+        cursor: "pointer",
+        p: 2,
+        textAlign: "center",
+        "&:hover": { boxShadow: 6 }
+      }}
     >
-      <img
-        src={product.image_small_url || "https://via.placeholder.com/150"}
-        alt={product.product_name}
+      <Box
+        component="img"
+        src={
+          product.image_small_url ||
+          "https://via.placeholder.com/100"
+        }
+        sx={{ height: 100, objectFit: "contain", mb: 1 }}
       />
 
-      <h2>{product.product_name}</h2>
-      <p>{product.brands}</p>
-    </div>
+      <CardContent>
+        <Typography fontWeight={600}>
+          {product.product_name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {product.brands}
+        </Typography>
+      </CardContent>
+    </Card>
   )
 }
+
+export default FoodCard
